@@ -24,4 +24,9 @@ for i in range(1):
         state_reward.append(rewards)  # 每一state的reward
 
     for i in range(len(cubes)):
-        cube_reward[flatten_string(cubes[i - 1])] = state_reward[i - 1]
+        # if the state is already in cube_reward, its value in cube_reward will be the greater value
+        if flatten_string(cubes[i - 1]) in cube_reward:
+            if state_reward[i - 1] > cube_reward[flatten_string(cubes[i - 1])]:
+                cube_reward[flatten_string(cubes[i - 1])] = state_reward[i - 1]
+        else:
+            cube_reward[flatten_string(cubes[i - 1])] = state_reward[i - 1]
