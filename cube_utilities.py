@@ -58,11 +58,10 @@ def generate_sample(steps=3):
     for s in formula:
         actions_list.append(s)
         states_cube_list.append(cube.copy())
-        states_1d_list.append(flatten_1d(cube))
         distance_list.append(steps - i)
         cube(s)
         i += 1
-    return actions_list, states_cube_list, states_1d_list, distance_list
+    return actions_list, states_cube_list, distance_list
 
 
 def generate_sequence(steps=3):
