@@ -6,8 +6,7 @@ import pycuber as pc
 
 action_map = {'F': 0, 'B': 1, 'U': 2, 'D': 3, 'L': 4, 'R': 5,
               "F'": 6, "B'": 7, "U'": 8, "D'": 9, "L'": 10, "R'": 11}
-color_list_map = {'green': [1, 0, 0, 0, 0, 0], 'blue': [0, 1, 0, 0, 0, 0], 'yellow': [0, 0, 1, 0, 0, 0],
-                  'red': [0, 0, 0, 1, 0, 0], 'orange': [0, 0, 0, 0, 1, 0], 'white': [0, 0, 0, 0, 0, 1]}
+color_short_map = {'green': 'g', 'blue': 'b', 'yellow': 'y', 'red': 'r', 'orange': 'o', 'white': 'w'}
 
 
 def flatten(cube):
@@ -18,17 +17,6 @@ def flatten(cube):
         for i in range(3):
             for j in range(3):
                 flat_cube.append(s[i][j].colour)
-    return flat_cube
-
-
-def flatten_1d(cube):
-    # this method returns a list of the color of every square in a cube, but the color is a list(see color_list_map)
-    sides = [cube.F, cube.B, cube.U, cube.D, cube.L, cube.R]
-    flat_cube = []
-    for s in sides:
-        for i in range(3):
-            for j in range(3):
-                flat_cube.extend(color_list_map[s[i][j].colour])
     return flat_cube
 
 
@@ -106,5 +94,5 @@ def flatten_string(cube):
     for s in sides:
         for i in range(3):
             for j in range(3):
-                flat_cube = flat_cube + (s[i][j].colour)
+                flat_cube = flat_cube + color_short_map[s[i][j].colour]
     return flat_cube
