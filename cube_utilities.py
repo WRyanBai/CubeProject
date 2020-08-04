@@ -64,28 +64,6 @@ def generate_sample(steps=3):
     return actions_list, states_cube_list, distance_list
 
 
-def generate_sequence(steps=3):
-    # this method generates samples of a cube that is randomly scrambled for a number of steps, default 3 steps
-    # returns a list of the state, flattened state, action, and distance from solved for the cube at each step
-    cube = pc.Cube()
-    actions = []
-    for i in range(steps):
-        actions.append(choice(list(action_map.keys())))
-    formula = pc.Formula(actions)
-    cube(formula)
-    formula.reverse()
-
-    states_cube_list = []
-    distance_list = []
-    i = 0
-    for s in formula:
-        states_cube_list.append(cube.copy())
-        distance_list.append(steps - i)
-        cube(s)
-        i += 1
-    return states_cube_list, distance_list
-
-
 def flatten_string(cube):
     # this method returns a list of the color of every square in a cube
     sides = [cube.F, cube.B, cube.U, cube.D, cube.L, cube.R]
