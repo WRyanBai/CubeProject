@@ -56,7 +56,7 @@ for i in range(1):
     cubes = []
     values = []
     prob = 100
-    for j in tqdm(range(50)):
+    for j in tqdm(range(10)):
         _cubes, _values = generate_sequence(prob)
         cubes.extend(_cubes)
         values.extend(_values)
