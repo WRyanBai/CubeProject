@@ -32,7 +32,21 @@ def generate_sequence(prob = 100):
                 distance_list.append(3 - k)
                 cube(s)
             return states_cube_list, distance_list
-        # else:
+        else:
+            update_cube=cube.copy() #update_cube is the updates every step and keeps track of the best moves
+            for i in range(3):
+                best_move="U"
+                max_score=0
+                for move in possible_actions:
+                    init_cube=update_cube.copy()
+                    init_cube(move)
+                    if(flatten_string(init_cube) in cube_reward):
+                        if(cube_reward([flatten_string(init_cube)])>max_score):
+                            best_move=move
+                states_cube_list.append(update_cube.copy())
+                distance_list.append(3-move)
+                update_cube(best_move)
+            return states_cube_list,distance_list
             # solve the cube using trained values, not completed yet
 
 
