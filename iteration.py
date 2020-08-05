@@ -50,14 +50,13 @@ def generate_sequence(prob = 100):
     return states_cube_list, value_list
 
 
-
 for i in range(1):
     cube_reward = {}
-    cube_count={}
+    cube_count = {}
     cubes = []
     values = []
     prob = 100
-    for j in tqdm(range(10)):
+    for j in tqdm(range(50)):
         _cubes, _values = generate_sequence(prob)
         cubes.extend(_cubes)
         values.extend(_values)
@@ -71,5 +70,4 @@ for i in range(1):
         else:
             cube_count[flatten_string(cubes[j-1])]=1
             cube_reward[flatten_string(cubes[j - 1])] = values[j - 1]
-        cube_reward[flatten_string(cubes[j-1])
-        # 这里应该改成 cube_reward 的 value 是 weighted average of all values of this state
+    cube_reward[flatten_string(pc.Cube())] = 100
