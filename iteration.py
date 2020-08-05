@@ -33,15 +33,15 @@ def generate_sequence(prob = 100):
                 total_steps += 1
         else:
             while total_steps < 6 and cube_completeness(cube) < 1 :
-                best_move = "U"
+                best_move = ["U"]
                 max_value = 0
                 for move in action_map.keys():
                     init_cube = cube.copy()
                     init_cube(move)
                     if flatten_string(init_cube) in cube_reward and cube_reward[flatten_string(init_cube)] > max_value:
-                        best_move = move
+                        best_move.append(move)
                 states_cube_list.append(cube.copy())
-                cube(best_move)
+                cube(r.choice(best_move))
                 total_steps += 1
         final_reward = 100 * (cube_completeness(cube) == 1) - 5 * total_steps
         for step, state in enumerate(states_cube_list):
@@ -56,6 +56,7 @@ for i in range(1):
     cubes = []
     values = []
     prob = 100
+    cube_reward[flatten_string(pc.Cube())] = 100
     for j in tqdm(range(10)):
         _cubes, _values = generate_sequence(prob)
         cubes.extend(_cubes)
@@ -70,4 +71,4 @@ for i in range(1):
         else:
             cube_count[flatten_string(cubes[j-1])]=1
             cube_reward[flatten_string(cubes[j - 1])] = values[j - 1]
-    cube_reward[flatten_string(pc.Cube())] = 100
+    
