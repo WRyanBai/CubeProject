@@ -28,8 +28,6 @@ def generate_sequence(prob = 100):
             # The following code solves the cube by reversing the actions that it was scrambled with
             formula.reverse()
             for k, move in enumerate(formula):
-                # k is the current number of actions taken to solve the cube
-                # e.g after performing one action on cube, k is 0. after two actions it is 1
                 states_cube_list.append(cube.copy())
                 cube(move)
                 total_steps += 1
@@ -54,24 +52,15 @@ def generate_sequence(prob = 100):
 
 
 for i in range(1):
-    cubes = []
-    distance_to_solved = []
     cube_reward = {}
+    cubes = []
+    values = []
+    prob = 100
     for j in tqdm(range(10)):
-        _cubes, _distance_to_solved,_state_reward = generate_sequence()
+        _cubes, _values = generate_sequence(prob)
         cubes.extend(_cubes)
-        distance_to_solved.extend(_distance_to_solved)
-    state_reward = []
-    state_reward.append(_state_reward)
-    ##
-    # for c in tqdm(distance_to_solved):
-    #    rewards = (100 - distance_to_solved[0]) * (1 - (0.1 * int(c)))
-    #     state_reward.append(rewards)  # 每一state的reward
-
+        values.extend(_values)
+        prob = int(prob * 0.9)
     for j in range(len(cubes)):
-        # if the state is already in cube_reward, its value in cube_reward will be the greater value
-        if flatten_string(cubes[j - 1]) in cube_reward:
-            if state_reward[j - 1] > cube_reward[flatten_string(cubes[j - 1])]:
-                cube_reward[flatten_string(cubes[j - 1])] = state_reward[j - 1]
-        else:
-            cube_reward[flatten_string(cubes[j - 1])] = state_reward[j - 1]
+        cube_reward[flatten_string(cubes[j - 1])] = values[j - 1]
+        # 这里应该改成 cube_reward 的 value 是 weighted average of all values of this state
