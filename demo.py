@@ -5,10 +5,12 @@ import pycuber as pc
 
 
 cube_reward = training(10)
-scrambled_cube = scramble()
+scrambled_cube, scramble_steps = scramble()
 print("scrambled cube")
-solved_cube, total_steps, actions = solve(scrambled_cube, cube_reward)
 print(scrambled_cube)
+print("formula used to scramble cube:")
+print(scramble_steps)
+solved_cube, total_steps, actions = solve(scrambled_cube, cube_reward)
 print("after solving")
 print(solved_cube)
 print("number of steps taken " + str(total_steps))
