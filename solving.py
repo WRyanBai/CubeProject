@@ -10,7 +10,7 @@ def scramble():
         actions.append(r.choice(list(action_map.keys())))
     formula = pc.Formula(actions)
     cube(formula)
-    return cube
+    return cube, formula
 
 
 def solve(cube, reward):
