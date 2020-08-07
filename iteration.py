@@ -5,6 +5,9 @@ from tqdm import tqdm
 from cube_utilities import action_map, flatten_string, cube_completeness
 
 
+cube_reward = {}
+
+
 def generate_sequence(prob = 100):
     # prob is the probability that we will solve the cube by reversing the actions which scrambled it
     # prob is 100 by default
@@ -32,15 +35,18 @@ def generate_sequence(prob = 100):
                 cube(move)
                 total_steps += 1
         else:
-            while total_steps < 6 and cube_completeness(cube) < 1 :
-                best_move = ["U"]
+            while total_steps < 6 and cube_completeness(cube) < 1:
+                best_move = list(action_map.keys())
                 max_value = 0
                 for move in action_map.keys():
                     init_cube = cube.copy()
                     init_cube(move)
-                    if flatten_string(init_cube) in cube_reward and cube_reward[flatten_string(init_cube)] > max_value:
-                        best_move.append(move)
-                        max_value = cube_reward[flatten_string(init_cube)]
+                    if flatten_string(init_cube) in cube_reward:
+                        if cube_reward[flatten_string(init_cube)] > max_value:
+                            best_move = [move]
+                            max_value = cube_reward[flatten_string(init_cube)]
+                        elif cube_reward[flatten_string(init_cube)] > max_value:
+                            best_move.append(move)
                 states_cube_list.append(cube.copy())
                 cube(r.choice(best_move))
                 total_steps += 1
@@ -51,24 +57,23 @@ def generate_sequence(prob = 100):
     return states_cube_list, value_list
 
 
-for i in range(1):
-    cube_reward = {}
+def training (iterations = 100):
     cube_count = {}
     cubes = []
     values = []
     prob = 100
-    cube_reward[flatten_string(pc.Cube())] = 100
-    for j in tqdm(range(10)):
+    for j in tqdm(range(iterations)):
         _cubes, _values = generate_sequence(prob)
         cubes.extend(_cubes)
         values.extend(_values)
         prob = int(prob * 0.9)
     for j in range(len(cubes)):
-        if(flatten_string(cubes[j-1]) in cube_count):
-            cube_count[flatten_string(cubes[j-1])]+=1
-            q=cube_reward[flatten_string(cubes[j-1])]
-            n=cube_count[flatten_string(cubes[j-1])]
-            cube_reward[flatten_string(cubes[j-1])]=(q*(n-1)+values[j-1])/n
+        if flatten_string(cubes[j - 1]) in cube_count:
+            cube_count[flatten_string(cubes[j - 1])] += 1
+            q = cube_reward[flatten_string(cubes[j - 1])]
+            n = cube_count[flatten_string(cubes[j - 1])]
+            cube_reward[flatten_string(cubes[j - 1])] = (q * (n - 1) + values[j - 1]) / n
         else:
-            cube_count[flatten_string(cubes[j-1])]=1
+            cube_count[flatten_string(cubes[j - 1])] = 1
             cube_reward[flatten_string(cubes[j - 1])] = values[j - 1]
+    cube_reward[flatten_string(pc.Cube())] = 100
