@@ -8,9 +8,9 @@ def percent_solved(iterations):
     cube_reward = training(iterations)
     solved_times = 0
     for i in tqdm(range(100)):
-        scrambled_cube = scramble()
-        solved_cube = solve(scrambled_cube, cube_reward)
-        if cube_completeness(solved_cube[0]) == 1:
+        scrambled_cube = scramble()[0]
+        solved_cube = solve(scrambled_cube, cube_reward)[0]
+        if cube_completeness(solved_cube) == 1:
             solved_times += 1
     print("after " + str(iterations) + " training iterations")
     print(str(solved_times) + " cubes were solved out of 100")
